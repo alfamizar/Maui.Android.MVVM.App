@@ -54,29 +54,19 @@
 	  <None Remove="Platforms\Android\Resources\values\themes.xml" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Platforms\Android\Repository\" />
-	</ItemGroup>
-
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
 	  <PackageReference Include="Xamarin.Android.Glide">
 	    <Version>4.13.2.1</Version>
 	  </PackageReference>
-	  <PackageReference Include="Xamarin.AndroidX.Compose.UI.ViewBinding">
-	    <Version>1.1.1.2</Version>
-	  </PackageReference>
-	  <PackageReference Include="Xamarin.AndroidX.DataBinding.ViewBinding">
-	    <Version>7.2.1.1</Version>
-	  </PackageReference>
-	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData">
-	    <Version>2.4.1.2</Version>
-	  </PackageReference>
-	  <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData.Core">
-	    <Version>2.4.1.2</Version>
-	  </PackageReference>
-	  <PackageReference Include="Xamarin.Google.Android.Material">
-	    <Version>1.6.1.1</Version>
-	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Platforms\Android\Repository\Database\" />
+	  <Folder Include="Platforms\Android\Resources\drawable\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Refit" Version="6.3.2" />
 	</ItemGroup>
 
 </Project>

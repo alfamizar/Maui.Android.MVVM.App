@@ -4,17 +4,11 @@ using AndroidX.RecyclerView.Widget;
 using Bumptech.Glide;
 using Bumptech.Glide.Request;
 using Maui.Android.MVVM.App.Platforms.Android.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static AndroidX.RecyclerView.Widget.RecyclerView;
 using View = Android.Views.View;
 
 namespace Maui.Android.MVVM.App.Platforms.Android.Adapters
 {
-    public class ItemsAdapter : RecyclerView.Adapter
+    public class UsersAdapter : RecyclerView.Adapter
     {
         public List<User> UsersList { get; set; }
         public IItemClickListener ItemClickListener;
@@ -23,11 +17,12 @@ namespace Maui.Android.MVVM.App.Platforms.Android.Adapters
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             Glide.With(holder.ItemView.Context)
-                .Load(UsersList[position].PhotoUrl)
+                .Load(UsersList[position].Picture.Large)
                 .Apply(RequestOptions.CircleCropTransform())
-                .Into((holder as MyViewHolder).UserPhotoImageView);
-            (holder as MyViewHolder).UserFirstNameTextView.Text = UsersList[position].FirstName;
-            (holder as MyViewHolder).UserLastNameTextView.Text = UsersList[position].LastName;
+                .Into((holder as UserViewHolder).UserPhotoImageView);
+            (holder as UserViewHolder).UserFirstNameTextView.Text = UsersList[position].Name.First;
+            (holder as UserViewHolder).UserLastNameTextView.Text = UsersList[position].Name.Last;
+            (holder as UserViewHolder).UserAgeTextView.Text = UsersList[position].Dob.Age.ToString();
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -35,7 +30,7 @@ namespace Maui.Android.MVVM.App.Platforms.Android.Adapters
             View view = LayoutInflater.From(parent.Context)
                     .Inflate(Resource.Layout.UserCardView, parent, false);
 
-            return new MyViewHolder(view, this);
+            return new UserViewHolder(view, this);
         }
 
         public void SetOnClickListener(IItemClickListener itemClickListener)
@@ -43,17 +38,20 @@ namespace Maui.Android.MVVM.App.Platforms.Android.Adapters
             this.ItemClickListener = itemClickListener;
         }
 
-        class MyViewHolder : RecyclerView.ViewHolder, View.IOnClickListener
+        class UserViewHolder : RecyclerView.ViewHolder, View.IOnClickListener
         {
             public readonly ImageView UserPhotoImageView;
             public readonly TextView UserFirstNameTextView;
             public readonly TextView UserLastNameTextView;
-            private readonly ItemsAdapter _itemsAdapter;
-            public MyViewHolder(global::Android.Views.View itemView, ItemsAdapter adapter) : base(itemView)
+            public readonly TextView UserAgeTextView;
+            private readonly UsersAdapter _itemsAdapter;
+
+            public UserViewHolder(global::Android.Views.View itemView, UsersAdapter adapter) : base(itemView)
             {
                 UserPhotoImageView = itemView.FindViewById<ImageView>(Resource.Id.UserPhotoImageView);
                 UserFirstNameTextView = itemView.FindViewById<TextView>(Resource.Id.UserFirstNameTextView);
                 UserLastNameTextView = itemView.FindViewById<TextView>(Resource.Id.UserLastNameTextView);
+                UserAgeTextView = itemView.FindViewById<TextView>(Resource.Id.UserAgeTextView);
                 itemView.SetOnClickListener(this);
                 _itemsAdapter = adapter;
             }

@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -14,25 +15,42 @@
             android:id="@+id/UserPhotoImageView"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:padding="8dp"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/UserFirstNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="Big"/>
+
+            <TextView
+                android:id="@+id/UserLastNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="Boss"/>
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/UserFirstNameTextView"
+            android:id="@+id/UserAgeTextView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_gravity="center_vertical"
+            android:gravity="center"
             tools:text="Big"/>
-
-        <TextView
-            android:id="@+id/UserLastNameTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            tools:text="Boss"/>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
 
