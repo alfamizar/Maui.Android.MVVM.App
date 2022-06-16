@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_all">
+
+	<fragment
+        android:id="@+id/nav_all"
+        android:name="Maui.Android.MVVM.App.Platfroms.Android.Fragments.RandomGenderFragment"
+        android:label="@string/menu_all"
+        tools:layout="@layout/fragment_persons" />
+
+	<fragment
+        android:id="@+id/nav_females"
+        android:name="Maui.Android.MVVM.App.Platfroms.Android.Fragments.RandomFemalesFragment"
+        android:label="@string/menu_females"
+        tools:layout="@layout/fragment_gallery" />
+
+	<fragment
+        android:id="@+id/nav_males"
+        android:name="Maui.Android.MVVM.App.Platfroms.Android.Fragments.RandomMalesFragment"
+        android:label="@string/menu_males"
+        tools:layout="@layout/fragment_slideshow" />
+
+	<fragment
+	    android:id="@+id/nav_person"
+	    android:name="Maui.Android.MVVM.App.Platfroms.Android.Fragments.PersonFragment"
+	    android:label="@string/person"
+	    tools:layout="@layout/fragment_person" />
+	
+</navigation>

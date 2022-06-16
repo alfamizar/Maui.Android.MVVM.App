@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Maui.Android.MVVM.App.Platforms.Android.ViewModels
+namespace Maui.Android.MVVM.App.Platfroms.Android.ViewModels
 {
     public class AndroidBaseViewModel : ViewModel, INotifyPropertyChanged
     {

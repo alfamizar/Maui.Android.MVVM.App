@@ -31,26 +31,23 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
-
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-
-		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
-
-		<!-- Custom Fonts -->
-		<MauiFont Include="Resources\Fonts\*" />
-
-		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Platforms\Android\Resources\layout\ActivityMain.xml" />
-	  <None Remove="Platforms\Android\Resources\layout\UserCardView.xml" />
+	  <None Remove="Platforms\Android\Resources\drawable\ic_female_symbol.xml" />
+	  <None Remove="Platforms\Android\Resources\drawable\ic_launcher_background.xml" />
+	  <None Remove="Platforms\Android\Resources\drawable\ic_launcher_foreground.xml" />
+	  <None Remove="Platforms\Android\Resources\drawable\ic_male_symbol.xml" />
+	  <None Remove="Platforms\Android\Resources\drawable\ic_unisex_symbol.xml" />
+	  <None Remove="Platforms\Android\Resources\drawable\side_nav_bar.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\activity_main.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\app_bar_main.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\content_main.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\fragment_person.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\fragment_persons.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\nav_header_main.xml" />
+	  <None Remove="Platforms\Android\Resources\layout\user_card_view.xml" />
+	  <None Remove="Platforms\Android\Resources\menu\activity_main_drawer.xml" />
+	  <None Remove="Platforms\Android\Resources\menu\main.xml" />
+	  <None Remove="Platforms\Android\Resources\values\dimens.xml" />
+	  <None Remove="Platforms\Android\Resources\values\strings.xml" />
 	  <None Remove="Platforms\Android\Resources\values\themes.xml" />
 	</ItemGroup>
 
@@ -61,8 +58,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Platforms\Android\Repository\Database\" />
-	  <Folder Include="Platforms\Android\Resources\drawable\" />
+	  <Folder Include="Repository\Database\" />
 	</ItemGroup>
 
 	<ItemGroup>
