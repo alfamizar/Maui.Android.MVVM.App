@@ -1,4 +1,5 @@
-﻿using Android.Views;
+﻿using Android.Runtime;
+using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Bumptech.Glide;
@@ -10,19 +11,31 @@ namespace Maui.Android.MVVM.App.Platforms.Android.Adapters
 {
     public class UsersAdapter : RecyclerView.Adapter
     {
-        public List<User> UsersList { get; set; }
+        private JavaList<User> _usersList;
         public IItemClickListener ItemClickListener;
-        public override int ItemCount => UsersList.Count;
+        public override int ItemCount => _usersList.Count;
+
+        public UsersAdapter(IItemClickListener itemClickListener)
+        {
+            _usersList = new JavaList<User>();
+            ItemClickListener = itemClickListener;
+        }
+
+        public void SetData(JavaList<User> users)
+        {
+            _usersList = users;
+            NotifyDataSetChanged();
+        }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             Glide.With(holder.ItemView.Context)
-                .Load(UsersList[position].Picture.Large)
+                .Load(_usersList[position].Picture.Large)
                 .Apply(RequestOptions.CircleCropTransform())
                 .Into((holder as UserViewHolder).UserPhotoImageView);
-            (holder as UserViewHolder).UserFirstNameTextView.Text = UsersList[position].Name.First;
-            (holder as UserViewHolder).UserLastNameTextView.Text = UsersList[position].Name.Last;
-            (holder as UserViewHolder).UserAgeTextView.Text = UsersList[position].Dob.Age.ToString();
+            (holder as UserViewHolder).UserFirstNameTextView.Text = _usersList[position].Name.First;
+            (holder as UserViewHolder).UserLastNameTextView.Text = _usersList[position].Name.Last;
+            (holder as UserViewHolder).UserAgeTextView.Text = _usersList[position].Dob.Age.ToString();
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -58,13 +71,13 @@ namespace Maui.Android.MVVM.App.Platforms.Android.Adapters
 
             public void OnClick(View v)
             {
-                _itemsAdapter.ItemClickListener?.OnItemClicked(v, AbsoluteAdapterPosition);
+                _itemsAdapter.ItemClickListener?.ListItemOnClick(v, AbsoluteAdapterPosition);
             }
         }
 
         public interface IItemClickListener
         {
-            void OnItemClicked(View view, int position);
+            void ListItemOnClick(View view, int position);
         }
     }
 }

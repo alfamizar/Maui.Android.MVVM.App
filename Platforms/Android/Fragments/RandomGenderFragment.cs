@@ -1,4 +1,5 @@
 ﻿using Android.OS;
+using Android.Runtime;
 using Android.Views;
 using AndroidX.Fragment.App;
 using AndroidX.Lifecycle;
@@ -9,7 +10,7 @@ using Google.Android.Material.ProgressIndicator;
 using Maui.Android.MVVM.App.Platforms.Android.Adapters;
 using Maui.Android.MVVM.App.Platforms.Android.Models;
 using Maui.Android.MVVM.App.Platforms.Android.ViewModels;
-using System.ComponentModel;
+using Maui.Android.MVVM.App.Platforms.Android.ViewModels.Observers;
 using static Maui.Android.MVVM.App.Platforms.Android.Adapters.UsersAdapter;
 using Debug = System.Diagnostics.Debug;
 using View = Android.Views.View;
@@ -32,10 +33,10 @@ namespace Maui.Android.MVVM.App.Platfroms.Android.Fragments
             _viewModel = new ViewModelProvider(this)
                 .Get(Java.Lang.Class.FromType(typeof(RandomPersonsListViewModel))) as RandomPersonsListViewModel;
 
-            _viewModel.UsersList.CollectionChanged += UsersViewModelCollectionChanged;
-            _viewModel.PropertyChanged += UsersViewModelPropertyChanged;
-
             InitViews();
+
+            _viewModel.GetUsersList().Observe(this, new LiveDataObserver<JavaList<User>>(_itemsAdapter.SetData));
+            _viewModel.GetIsBusy().Observe(this, new BoolLiveDataObserver(ChangeProgressBarVisibility));
 
             return _view;
         }
@@ -60,71 +61,37 @@ namespace Maui.Android.MVVM.App.Platfroms.Android.Fragments
 
         private void InitRecycler()
         {
-            _itemsAdapter = new UsersAdapter();
-            _itemsAdapter.SetOnClickListener(this);
-            _itemsAdapter.UsersList = new List<User>(_viewModel.UsersList);
+            _itemsAdapter = new UsersAdapter(this);
             _recyclerView = _view.FindViewById<RecyclerView>(Resource.Id.users_rv);
             _recyclerView.SetLayoutManager(new LinearLayoutManager(_view.Context));
             _recyclerView.SetAdapter(_itemsAdapter);
         }
 
-        private void UsersViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ChangeProgressBarVisibility(bool isBusy)
         {
-            switch (e.PropertyName)
+            if (isBusy)
             {
-                case "IsBusy":
-                    if (_viewModel.IsBusy)
-                    {
-                        ChangeProgressBarVisibility(ViewStates.Visible);
-                    }
-                    else
-                    {
-                        ChangeProgressBarVisibility(ViewStates.Invisible);
-                        _recyclerView.SmoothScrollToPosition(_recyclerView.GetAdapter().ItemCount - 1);
-                    }
-                    Debug.WriteLine("IsBusyChanged");
-                    break;
-                default:
-                    Debug.WriteLine("SomePropertyChanged");
-                    break;
+                _isBusyProgressBar.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                _isBusyProgressBar.Visibility = ViewStates.Invisible;
             }
         }
 
-        private void UsersViewModelCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                _itemsAdapter.UsersList.Add(e.NewItems[0] as User);
-            }
-
-            new Handler(Looper.MainLooper).Post(() =>
-            {
-                _itemsAdapter.NotifyDataSetChanged();
-            });
-        }
-
-        private void ChangeProgressBarVisibility(ViewStates viewState)
-        {
-            new Handler(Looper.MainLooper).Post(() =>
-            {
-                _isBusyProgressBar.Visibility = viewState;
-            });
-        }
-
-        public void OnItemClicked(View view, int position)
-        {
-            Debug.WriteLine($"Position {position} clicked");
-
+        public void ListItemOnClick(View view, int position)
+        {           
             Bundle bundle = new Bundle();
-            string userFirstName = _viewModel.UsersList[position].Name.First;
+            string userFirstName = ((JavaList<User>)_viewModel.GetUsersList().Value)[position].Name.First;
             bundle.PutString("person", userFirstName);
             Navigation.FindNavController(view).Navigate(Resource.Id.nav_person, bundle);
+            Debug.WriteLine($"Position {position} clicked");
         }
         public override void OnDestroyView()
         {
             base.OnDestroyView();
-            _viewModel.UsersList.CollectionChanged -= UsersViewModelCollectionChanged;
-            _viewModel.PropertyChanged -= UsersViewModelPropertyChanged;
+            _viewModel.GetUsersList().RemoveObservers(this);
+            _viewModel.GetIsBusy().RemoveObservers(this);
             _floatingActionButton.Click -= FabOnClick;
         }
     }

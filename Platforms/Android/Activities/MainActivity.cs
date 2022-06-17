@@ -15,7 +15,7 @@ using AndroidX.Navigation.Fragment;
 
 namespace Maui.Android.MVVM.App.Platfroms.Android.Activities;
 
-[Activity(Theme = "@style/Theme.MyApplication.NoActionBar", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
+[Activity(Theme = "@style/Theme.MyApplication.NoActionBar", MainLauncher = true)]
 public class MainActivity : AppCompatActivity
 {
     private AppBarConfiguration _appBarConfiguration;
@@ -53,7 +53,7 @@ public class MainActivity : AppCompatActivity
     private void FabOnClick(object sender, EventArgs e)
     {
         Snackbar.Make((View)sender, "Replace with your own action", BaseTransientBottomBar.LengthLong)
-            .SetAction("Action", clickHandler: null).Show();
+            .SetAction("_action", clickHandler: null).Show();
     }
 
     public override bool OnCreateOptionsMenu(IMenu menu)

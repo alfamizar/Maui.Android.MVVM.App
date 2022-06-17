@@ -5,8 +5,6 @@ using AndroidX.Fragment.App;
 using AndroidX.Lifecycle;
 using Google.Android.Material.ProgressIndicator;
 using Maui.Android.MVVM.App.Platforms.Android.ViewModels;
-using System.ComponentModel;
-using Debug = System.Diagnostics.Debug;
 using View = Android.Views.View;
 
 namespace Maui.Android.MVVM.App.Platfroms.Android.Fragments
@@ -25,8 +23,6 @@ namespace Maui.Android.MVVM.App.Platfroms.Android.Fragments
             _viewModel = new ViewModelProvider(this)
                 .Get(Java.Lang.Class.FromType(typeof(PersonViewModel))) as PersonViewModel;
 
-            _viewModel.PropertyChanged += UsersViewModelPropertyChanged;
-
             InitViews();
 
             _userNameTextView.Text = Arguments.GetString("person");         
@@ -38,35 +34,6 @@ namespace Maui.Android.MVVM.App.Platfroms.Android.Fragments
         {
             _isBusyProgressBar = _view.FindViewById<CircularProgressIndicator>(Resource.Id.is_busy_progress_indicator);
             _userNameTextView = _view.FindViewById<TextView>(Resource.Id.user_first_name_tv);
-        }
-
-        private void UsersViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "IsBusy":
-                    if (_viewModel.IsBusy)
-                    {
-                        ChangeProgressBarVisibility(ViewStates.Visible);
-                    }
-                    else
-                    {
-                        ChangeProgressBarVisibility(ViewStates.Invisible);
-                    }
-                    Debug.WriteLine("IsBusyChanged");
-                    break;
-                default:
-                    Debug.WriteLine("SomePropertyChanged");
-                    break;
-            }
-        }
-
-        private void ChangeProgressBarVisibility(ViewStates viewState)
-        {
-            new Handler(Looper.MainLooper).Post(() =>
-            {
-                _isBusyProgressBar.Visibility = viewState;
-            });
         }
     }
 }

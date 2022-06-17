@@ -1,43 +1,14 @@
 ﻿using AndroidX.Lifecycle;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Maui.Android.MVVM.App.Platfroms.Android.ViewModels
 {
-    public class AndroidBaseViewModel : ViewModel, INotifyPropertyChanged
+    public class AndroidBaseViewModel : ViewModel
     {
+        protected MutableLiveData IsBusy;
 
-        private bool _isBusy;
-        public bool IsBusy
+        public AndroidBaseViewModel()
         {
-            get { return _isBusy; }
-            set
-            {
-                SetProperty(ref _isBusy, value);
-            }
+            IsBusy = new MutableLiveData();
         }
-
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName] string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-
-            onChanged?.Invoke();
-
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 }

@@ -1,35 +1,50 @@
-﻿using Maui.Android.MVVM.App.Platforms.Android.Models;
+﻿using Android.Runtime;
+using AndroidX.Lifecycle;
+using Maui.Android.MVVM.App.Platforms.Android.Models;
 using Maui.Android.MVVM.App.Platfroms.Android.ViewModels;
 using Maui.Android.MVVM.App.Repository;
-using System.Collections.ObjectModel;
 
 namespace Maui.Android.MVVM.App.Platforms.Android.ViewModels
 {
     public class RandomPersonsListViewModel : AndroidBaseViewModel
     {
         private readonly IRepository _repository;
-        public ObservableCollection<User> UsersList { get; private set; }
+        private readonly JavaList<User> _javaUsersList;
+        private readonly MutableLiveData _usersList;
 
         public RandomPersonsListViewModel()
         {
             _repository = new WebRepository();
-            UsersList = new ObservableCollection<User>();
+            _javaUsersList = new JavaList<User>();
+            _usersList = new MutableLiveData();
+        }
+
+        public LiveData GetUsersList()
+        {
+            return _usersList;
+        }
+
+        public LiveData GetIsBusy()
+        {
+            return IsBusy;
         }
 
         public async Task OnLoadUsersButtonClicked(string gender, int count)
         {
-            if (IsBusy) return;
+            if ((bool)IsBusy.Value) return;
 
-            IsBusy = true;
+            IsBusy.PostValue(true);
 
             var users = await _repository.GetUsersList(gender, count);
 
             foreach (var user in users)
             {
-                UsersList.Add(user);
+                _javaUsersList.Add(user);
             }
 
-            IsBusy = false;
+            _usersList.PostValue(_javaUsersList);
+
+            IsBusy.PostValue(false);
         }
     }
 }
