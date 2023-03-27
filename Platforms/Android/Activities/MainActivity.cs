@@ -12,6 +12,8 @@ using View = Android.Views.View;
 using AndroidX.DrawerLayout.Widget;
 using Google.Android.Material.Navigation;
 using AndroidX.Navigation.Fragment;
+using Maui.Android.MVVM.App.Platforms.Android.Repository.WebService;
+using Maui.Android.MVVM.App.Repository;
 
 namespace Maui.Android.MVVM.App.Platfroms.Android.Activities;
 
@@ -48,6 +50,8 @@ public class MainActivity : AppCompatActivity
         NavController navController = navHostFragment.NavController;
         NavigationUI.SetupActionBarWithNavController(this, navController, _appBarConfiguration);
         NavigationUI.SetupWithNavController(navigationView, navController);
+
+        IRepository repository = MauiApplication.Current.Services.GetService<IRepository>();
     }
 
     private void FabOnClick(object sender, EventArgs e)
